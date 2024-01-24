@@ -6,6 +6,8 @@ import androidx.core.app.NotificationCompat;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
@@ -31,6 +33,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v){
         int id = v.getId();
         if(id == R.id.send_notice){
+            /*新增点击跳转功能*/
+            Intent intent = new Intent(this, NotificationActivity.class);
+            PendingIntent pi = PendingIntent.getActivity(this, 0, intent, 0);
+            /*通知栏弹出通知功能*/
             NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             NotificationChannel mChannel = new NotificationChannel(ch_id,"test",importance);
             manager.createNotificationChannel(mChannel);
@@ -40,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             builder.setWhen(System.currentTimeMillis());
             builder.setSmallIcon(R.mipmap.ic_launcher);
             builder.setLargeIcon(BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher));
+            builder.setContentIntent(pi);/*新增点击跳转功能*/
+            builder.setAutoCancel(true);
             manager.notify(1,builder.build());
         }
     }
